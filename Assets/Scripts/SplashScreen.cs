@@ -19,7 +19,7 @@ public class SplashScreen : MonoBehaviour {
 			fadeSet = true;
 		}
 		if(Time.timeSinceLevelLoad >= splashDuration) {
-			manager.LoadLevelByName("01a Start");
+			manager.LoadLevelByName("01a Cut Scene 00");
 		}
 	}
 }
