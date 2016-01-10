@@ -9,6 +9,7 @@ public class InputHandler : MonoBehaviour {
 	bool left;
 	bool right;
 	bool space;
+	bool spaceUp;
 
 
 	// Use this for initialization
@@ -20,6 +21,7 @@ public class InputHandler : MonoBehaviour {
 	void Update () {
 		down = Input.GetKey (KeyCode.DownArrow);
 		space = Input.GetKey (KeyCode.Space);
-		skater.SetInput (down, space);
+		spaceUp = Input.GetKeyUp (KeyCode.Space);
+		skater.SetInput (down, space, spaceUp);
 	}
 }

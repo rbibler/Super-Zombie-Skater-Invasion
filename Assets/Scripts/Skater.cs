@@ -7,11 +7,14 @@ public class Skater : MonoBehaviour {
 
 	public float skateAccel;
 	public float jumpAccel;
+	public float jumpAccelIncrease;
 	public GameValues gameValues;
 
 	private int state;
+	private float potentialJumpAccel = 6;
 	private bool down;
 	private bool space;
+	private bool spaceUp;
 	private Animator animator;
 
 
@@ -31,36 +34,57 @@ public class Skater : MonoBehaviour {
 	void Update () {
 		HandleInput ();
 		SetAnimState ();
+		print(state);
 	}
 
 	void SetAnimState() {
 		animator.SetInteger ("state", state);
 	}
 
-	public void SetInput(bool down, bool space) {
+	public void SetInput(bool down, bool space, bool spaceUp) {
 		this.down = down;
 		this.space = space;
+		this.spaceUp = spaceUp;
 	}
 
 	void HandleInput() {
 		switch (state) {
 		case STATE_SKATING:
-			if (space) {
-				Jump ();
+			if(space) {
+				Crouch(true);
 			}
-			else if (down) {
-				state = STATE_CROUCHING;
+			break;
+		case STATE_CROUCHING:
+			if(space) {
+				Crouch(true);
+			} else if(spaceUp) {
+				Jump ();
 			}
 			break;
 		case STATE_JUMPING: 
+			if(space) {
+				Crouch (false);
+			}
 			break;
+		}
+	}
+	
+	void Crouch(bool changeAnimState) {
+		potentialJumpAccel += jumpAccelIncrease * Time.deltaTime;
+		print(potentialJumpAccel);
+		if(potentialJumpAccel >= jumpAccel) {
+			potentialJumpAccel = jumpAccel;
+		}
+		if(changeAnimState) {
+			state = STATE_CROUCHING;
 		}
 	}
 	
 	void Jump() {
 		print ("Jumping");
 		state = STATE_JUMPING;
-		transform.rigidbody2D.velocity = Vector3.up * jumpAccel;
+		transform.rigidbody2D.velocity = Vector3.up * potentialJumpAccel;
+		potentialJumpAccel = 6;
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
