@@ -3,8 +3,6 @@ using System.Collections;
 
 public class InputHandler : MonoBehaviour {
 
-	public Background background;
-	public Foreground foreground;
 	public Skater skater;
 
 	bool down;
@@ -21,11 +19,7 @@ public class InputHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		down = Input.GetKey (KeyCode.DownArrow);
-		left = Input.GetKey (KeyCode.LeftArrow);
-		right = Input.GetKey (KeyCode.RightArrow);
 		space = Input.GetKey (KeyCode.Space);
-		background.SetInput(left, right);
-		foreground.SetInput(left, right);
-		skater.SetInput (down, left, right, space);
+		skater.SetInput (down, space);
 	}
 }

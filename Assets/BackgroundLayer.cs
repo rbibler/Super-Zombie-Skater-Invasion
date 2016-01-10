@@ -6,8 +6,10 @@ using System.Collections;
 public class BackgroundLayer : MonoBehaviour {
 
 	public float xSpeed;
+	public GameValues gameValues;
 	
 	private RawImage image;
+
 	private Rect rect;
 	// Use this for initialization
 	void Start () {
@@ -17,7 +19,7 @@ public class BackgroundLayer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		rect.x += (xSpeed * Time.deltaTime);
+		rect.x += (xSpeed * Time.deltaTime * gameValues.speed);
 		image.uvRect = rect;
 	}
 }
