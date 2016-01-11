@@ -1,39 +1,52 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CutScene : MonoBehaviour {
+public class CutScene : MonoBehaviour, IListener {
 
 	public Alphabet alphabet;
 	public Letter letter;
-	public string textToDraw;
-	public float timeDelay;
-	public Vector2 startPoint;
+	public CutSceneCard[] cards;
+	public AnimatedFader fader;
 
-	private float lastDrawTime;
-	private int currentLetterPos;
-	private char[] text;
+	private CutSceneCard currentCard;
+	private int currentCardIndex;
+	private bool waitingOnFader;
 
-	// Use this for initialization
-	void Start () {
-		text = textToDraw.ToCharArray ();
+	void Start() {
+		currentCard = cards [0];
+		fader.RegisterListener (this);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		float timeSinceLast = Time.timeSinceLevelLoad - lastDrawTime;
-		if(timeSinceLast >= timeDelay) {
-			char currentLetter = text[currentLetterPos];
-			Sprite s = alphabet.GetLetter(currentLetter);
-			Letter newLetter = Instantiate (letter) as Letter;
-			newLetter.transform.parent = transform;
-			newLetter.GetComponent<SpriteRenderer>().sprite = s;
-			newLetter.transform.position = new Vector3(startPoint.x, startPoint.y, -1);
-			startPoint.x += 1;
-			currentLetterPos++;
-			if(currentLetterPos >= text.Length) {
-				currentLetterPos = 0;
-			}
-			lastDrawTime = Time.timeSinceLevelLoad;
+
+	void Update() {
+		if (waitingOnFader) {
+			return;
+		}
+		if (currentCard.DrawLine (alphabet, letter)) {
+			fader.StartFadeAnimation(AnimatedFader.FADE_OUT);
+			waitingOnFader = true;
 		}
 	}
+
+	void IListener.OnNotification(string message) {
+		if(message.Contains ("Fader Finished")) {
+			message = message.Substring (message.IndexOf(":") + 1);
+			print (message);
+			int faderState = 0;
+			int.TryParse(message, out faderState);
+			if(faderState == 5) {
+				waitingOnFader = false;
+				fader.gameObject.SetActive(false);
+				GoToNextCard();
+			}
+		}
+	}
+
+	void GoToNextCard() {
+		Destroy (currentCard.gameObject);
+		currentCardIndex++;
+		currentCard = cards [currentCardIndex];
+	}
+
+	
+
 }

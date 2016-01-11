@@ -17,11 +17,17 @@ public class AnimatedFader : MonoBehaviour {
 	
 	private Animator animator;
 
+	private ArrayList listeners = new ArrayList();
+
 	// Use this for initialization
 	void Awake () {
 		animator = GetComponent<Animator>();
 		animator.SetInteger("state", startState);
 		
+	}
+
+	public void RegisterListener(IListener listener) {
+		listeners.Add (listener);
 	}
 	
 	public void StartFadeAnimation (int state) {
@@ -37,4 +43,12 @@ public class AnimatedFader : MonoBehaviour {
 	public void NotifyStart() {
 		//print ("Starting Fade OUt anim");
 	}
+
+	public void NotifyFadeFinshed(int state) {
+		foreach (IListener listener in listeners) {
+			print ("Fader is notifying: " + listener);
+			listener.OnNotification("Fader Finished:" + state);
+		}
+	}
 }
+
