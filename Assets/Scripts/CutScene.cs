@@ -7,6 +7,8 @@ public class CutScene : MonoBehaviour, IListener {
 	public Letter letter;
 	public CutSceneCard[] cards;
 	public AnimatedFader fader;
+	public string levelToLoad;
+	public LevelManager manager;
 
 	private CutSceneCard currentCard;
 	private int currentCardIndex;
@@ -44,6 +46,10 @@ public class CutScene : MonoBehaviour, IListener {
 	void GoToNextCard() {
 		Destroy (currentCard.gameObject);
 		currentCardIndex++;
+		if(currentCardIndex >= cards.Length) {
+			manager.LoadLevelByName(levelToLoad);
+			return;
+		}
 		currentCard = cards [currentCardIndex];
 	}
 
