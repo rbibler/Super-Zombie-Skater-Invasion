@@ -34,7 +34,6 @@ public class Skater : MonoBehaviour {
 	void Update () {
 		HandleInput ();
 		SetAnimState ();
-		print(state);
 	}
 
 	void SetAnimState() {
@@ -71,7 +70,6 @@ public class Skater : MonoBehaviour {
 	
 	void Crouch(bool changeAnimState) {
 		potentialJumpAccel += jumpAccelIncrease * Time.deltaTime;
-		print(potentialJumpAccel);
 		if(potentialJumpAccel >= jumpAccel) {
 			potentialJumpAccel = jumpAccel;
 		}
@@ -81,7 +79,6 @@ public class Skater : MonoBehaviour {
 	}
 	
 	void Jump() {
-		print ("Jumping");
 		state = STATE_JUMPING;
 		transform.rigidbody2D.velocity = Vector3.up * potentialJumpAccel;
 		potentialJumpAccel = 6;
@@ -89,9 +86,7 @@ public class Skater : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D col) {
 		Vector2 contactNormal = col.contacts [0].normal;
-		print (contactNormal);
 		if (contactNormal.normalized.y == 1.0) {
-			print ("hit ground");
 			state = STATE_SKATING;
 		} else if (contactNormal.normalized.x == -1.0 && state != STATE_BAILING) {
 			state = STATE_BAILING;
@@ -103,6 +98,4 @@ public class Skater : MonoBehaviour {
 		state = STATE_SKATING;
 		gameValues.ResetSpeed ();
 	}
-	
-	
 }

@@ -27,7 +27,6 @@ public class LevelSplash : MonoBehaviour, IListener {
 	void IListener.OnNotification(string message) {
 		if(message.Contains ("Fader Finished")) {
 			message = message.Substring (message.IndexOf(":") + 1);
-			print (message);
 			int faderState = 0;
 			int.TryParse(message, out faderState);
 			if(faderState == 5) {

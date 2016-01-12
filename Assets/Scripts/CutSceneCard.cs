@@ -27,7 +27,6 @@ public class CutSceneCard : MonoBehaviour {
 		float timeSinceLast = Time.timeSinceLevelLoad - lastDrawTime;
 		if (persistState) {
 			if(timeSinceLast >= persistTime) {
-				print ("Ending the Persistance");
 				return true;
 			}
 			return false;

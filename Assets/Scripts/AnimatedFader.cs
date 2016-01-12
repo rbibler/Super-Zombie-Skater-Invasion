@@ -46,7 +46,6 @@ public class AnimatedFader : MonoBehaviour {
 
 	public void NotifyFadeFinshed(int state) {
 		foreach (IListener listener in listeners) {
-			print ("Fader is notifying: " + listener);
 			listener.OnNotification("Fader Finished:" + state);
 		}
 	}
