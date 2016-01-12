@@ -50,10 +50,42 @@ TextureImporter:
     21300090: alphabet_trans_45
     21300092: alphabet_trans_46
     21300094: alphabet_trans_47
+    21300096: alphabet_trans_48
+    21300098: alphabet_trans_49
+    21300100: alphabet_trans_50
+    21300102: alphabet_trans_51
+    21300104: alphabet_trans_52
+    21300106: alphabet_trans_53
+    21300108: alphabet_trans_54
+    21300110: alphabet_trans_55
+    21300112: alphabet_trans_56
+    21300114: alphabet_trans_57
+    21300116: alphabet_trans_58
+    21300118: alphabet_trans_59
+    21300120: alphabet_trans_60
+    21300122: alphabet_trans_61
+    21300124: alphabet_trans_62
+    21300126: alphabet_trans_63
+    21300128: alphabet_trans_64
+    21300130: alphabet_trans_65
+    21300132: alphabet_trans_66
+    21300134: alphabet_trans_67
+    21300136: alphabet_trans_68
+    21300138: alphabet_trans_69
+    21300140: alphabet_trans_70
+    21300142: alphabet_trans_71
+    21300144: alphabet_trans_72
+    21300146: alphabet_trans_73
+    21300148: alphabet_trans_74
+    21300150: alphabet_trans_75
+    21300152: alphabet_trans_76
+    21300154: alphabet_trans_77
+    21300156: alphabet_trans_78
+    21300158: alphabet_trans_79
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -69,7 +101,7 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -2
   maxTextureSize: 1024
   textureSettings:
     filterMode: 0
@@ -95,7 +127,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -105,7 +137,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 8
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -115,7 +147,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -125,7 +157,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 24
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -135,7 +167,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -145,7 +177,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 40
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -155,7 +187,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -165,7 +197,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 56
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -175,7 +207,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -185,7 +217,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 72
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -195,7 +227,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -205,7 +237,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 88
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -215,7 +247,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -225,7 +257,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 104
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -235,7 +267,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 112
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -245,7 +277,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 120
-        y: 16
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -254,8 +286,8 @@ TextureImporter:
     - name: alphabet_trans_16
       rect:
         serializedVersion: 2
-        x: 0
-        y: 8
+        x: 128
+        y: 24
         width: 8
         height: 8
       alignment: 6
@@ -264,6 +296,246 @@ TextureImporter:
     - name: alphabet_trans_17
       rect:
         serializedVersion: 2
+        x: 136
+        y: 24
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_18
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 24
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_19
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 24
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_21
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_22
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_23
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_24
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_25
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_26
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_27
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_28
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_29
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_30
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_31
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_32
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_33
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_34
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_35
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_36
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_37
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_38
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_39
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 16
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_41
+      rect:
+        serializedVersion: 2
         x: 8
         y: 8
         width: 8
@@ -271,7 +543,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_18
+    - name: alphabet_trans_42
       rect:
         serializedVersion: 2
         x: 16
@@ -281,7 +553,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_19
+    - name: alphabet_trans_43
       rect:
         serializedVersion: 2
         x: 24
@@ -291,7 +563,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_20
+    - name: alphabet_trans_44
       rect:
         serializedVersion: 2
         x: 32
@@ -301,7 +573,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_21
+    - name: alphabet_trans_45
       rect:
         serializedVersion: 2
         x: 40
@@ -311,7 +583,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_22
+    - name: alphabet_trans_46
       rect:
         serializedVersion: 2
         x: 48
@@ -321,7 +593,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_23
+    - name: alphabet_trans_47
       rect:
         serializedVersion: 2
         x: 56
@@ -331,7 +603,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_24
+    - name: alphabet_trans_48
       rect:
         serializedVersion: 2
         x: 64
@@ -341,7 +613,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_25
+    - name: alphabet_trans_49
       rect:
         serializedVersion: 2
         x: 72
@@ -351,7 +623,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_26
+    - name: alphabet_trans_50
       rect:
         serializedVersion: 2
         x: 80
@@ -361,7 +633,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_27
+    - name: alphabet_trans_51
       rect:
         serializedVersion: 2
         x: 88
@@ -371,7 +643,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_28
+    - name: alphabet_trans_52
       rect:
         serializedVersion: 2
         x: 96
@@ -381,7 +653,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_29
+    - name: alphabet_trans_53
       rect:
         serializedVersion: 2
         x: 104
@@ -391,7 +663,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_30
+    - name: alphabet_trans_54
       rect:
         serializedVersion: 2
         x: 112
@@ -401,7 +673,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_31
+    - name: alphabet_trans_55
       rect:
         serializedVersion: 2
         x: 120
@@ -411,7 +683,47 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_32
+    - name: alphabet_trans_56
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 8
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_57
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 8
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_58
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 8
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_59
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 8
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_60
       rect:
         serializedVersion: 2
         x: 0
@@ -421,7 +733,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_33
+    - name: alphabet_trans_61
       rect:
         serializedVersion: 2
         x: 8
@@ -431,7 +743,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_34
+    - name: alphabet_trans_62
       rect:
         serializedVersion: 2
         x: 16
@@ -441,7 +753,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_35
+    - name: alphabet_trans_63
       rect:
         serializedVersion: 2
         x: 24
@@ -451,7 +763,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_36
+    - name: alphabet_trans_64
       rect:
         serializedVersion: 2
         x: 32
@@ -461,7 +773,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_37
+    - name: alphabet_trans_65
       rect:
         serializedVersion: 2
         x: 40
@@ -471,7 +783,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_38
+    - name: alphabet_trans_66
       rect:
         serializedVersion: 2
         x: 48
@@ -481,7 +793,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_39
+    - name: alphabet_trans_67
       rect:
         serializedVersion: 2
         x: 56
@@ -491,7 +803,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_40
+    - name: alphabet_trans_68
       rect:
         serializedVersion: 2
         x: 64
@@ -501,7 +813,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_41
+    - name: alphabet_trans_69
       rect:
         serializedVersion: 2
         x: 72
@@ -511,7 +823,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_42
+    - name: alphabet_trans_70
       rect:
         serializedVersion: 2
         x: 80
@@ -521,7 +833,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_43
+    - name: alphabet_trans_71
       rect:
         serializedVersion: 2
         x: 88
@@ -531,7 +843,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_44
+    - name: alphabet_trans_72
       rect:
         serializedVersion: 2
         x: 96
@@ -541,7 +853,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_45
+    - name: alphabet_trans_73
       rect:
         serializedVersion: 2
         x: 104
@@ -551,7 +863,7 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_46
+    - name: alphabet_trans_74
       rect:
         serializedVersion: 2
         x: 112
@@ -561,10 +873,50 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: alphabet_trans_47
+    - name: alphabet_trans_75
       rect:
         serializedVersion: 2
         x: 120
+        y: 0
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_76
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_77
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 0
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_78
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 8
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: alphabet_trans_79
+      rect:
+        serializedVersion: 2
+        x: 152
         y: 0
         width: 8
         height: 8

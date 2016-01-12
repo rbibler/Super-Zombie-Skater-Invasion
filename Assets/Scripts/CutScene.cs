@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class CutScene : MonoBehaviour, IListener {
 
 	public Alphabet alphabet;
@@ -13,6 +14,7 @@ public class CutScene : MonoBehaviour, IListener {
 	private CutSceneCard currentCard;
 	private int currentCardIndex;
 	private bool waitingOnFader;
+	private bool finishOnNextFade;
 
 	void Start() {
 		currentCard = cards [0];
@@ -36,6 +38,10 @@ public class CutScene : MonoBehaviour, IListener {
 			int faderState = 0;
 			int.TryParse(message, out faderState);
 			if(faderState == 5) {
+				if(finishOnNextFade) {
+					manager.LoadLevelByName(levelToLoad);
+					return;
+				}
 				waitingOnFader = false;
 				fader.gameObject.SetActive(false);
 				GoToNextCard();
@@ -46,11 +52,18 @@ public class CutScene : MonoBehaviour, IListener {
 	void GoToNextCard() {
 		Destroy (currentCard.gameObject);
 		currentCardIndex++;
-		if(currentCardIndex >= cards.Length) {
-			manager.LoadLevelByName(levelToLoad);
-			return;
+		if(currentCardIndex == cards.Length - 1) {
+			finishOnNextFade = true;
 		}
 		currentCard = cards [currentCardIndex];
+	}
+
+	void OnMouseDown() {
+		EndScene ();
+	}
+
+	void EndScene() {
+		manager.LoadLevelByName(levelToLoad);
 	}
 
 	

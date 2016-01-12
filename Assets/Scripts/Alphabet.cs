@@ -6,7 +6,7 @@ public class Alphabet : MonoBehaviour {
 	public Sprite[] letters;
 
 	private Hashtable lettersMap;
-
+	
 
 	
 	// Update is called once per frame
@@ -16,53 +16,79 @@ public class Alphabet : MonoBehaviour {
 
 	void SetupLetters() {
 		lettersMap = new Hashtable();
-		lettersMap.Add (' ', 0);
-		lettersMap.Add ('0', 1);
-		lettersMap.Add ('1', 2);
-		lettersMap.Add ('2', 3);
-		lettersMap.Add ('3', 4);
-		lettersMap.Add ('4', 5);
-		lettersMap.Add ('5', 6);
-		lettersMap.Add ('6', 7);
-		lettersMap.Add ('7', 8);
-		lettersMap.Add ('8', 9);
-		lettersMap.Add ('9', 10);
-		lettersMap.Add ('A', 11);
-		lettersMap.Add ('B', 12);
-		lettersMap.Add ('C', 13);
-		lettersMap.Add ('D', 14);
-		lettersMap.Add ('E', 15);
-		lettersMap.Add ('F', 16);
-		lettersMap.Add ('G', 17);
-		lettersMap.Add ('H', 18);
-		lettersMap.Add ('I', 19);
-		lettersMap.Add ('J', 20);
-		lettersMap.Add ('K', 21);
+		lettersMap.Add ('A', 0);
+		lettersMap.Add ('a', 1);
+		lettersMap.Add ('B', 2);
+		lettersMap.Add ('b', 3);
+		lettersMap.Add ('C', 4);
+		lettersMap.Add ('c', 5);
+		lettersMap.Add ('D', 6);
+		lettersMap.Add ('d', 7);
+		lettersMap.Add ('E', 8);
+		lettersMap.Add ('e', 9);
+		lettersMap.Add ('F', 10);
+		lettersMap.Add ('f', 11);
+		lettersMap.Add ('G', 12);
+		lettersMap.Add ('g', 13);
+		lettersMap.Add ('H', 14);
+		lettersMap.Add ('h', 15);
+		lettersMap.Add ('I', 16);
+		lettersMap.Add ('i', 17);
+		lettersMap.Add ('J', 18);
+		lettersMap.Add ('j', 19);
+		lettersMap.Add ('K', 20);
+		lettersMap.Add ('k', 21);
 		lettersMap.Add ('L', 22);
-		lettersMap.Add ('M', 23);
-		lettersMap.Add ('N', 24);
-		lettersMap.Add ('O', 25);
-		lettersMap.Add ('P', 26);
-		lettersMap.Add ('Q', 27);
-		lettersMap.Add ('R', 28);
-		lettersMap.Add ('S', 29);
-		lettersMap.Add ('T', 30);
-		lettersMap.Add ('U', 31);
-		lettersMap.Add ('V', 32);
-		lettersMap.Add ('W', 33);
-		lettersMap.Add ('X', 34);
-		lettersMap.Add ('Y', 35);
-		lettersMap.Add ('Z', 36);
-		lettersMap.Add ('.', 37);
-		lettersMap.Add ('-', 38);
-		lettersMap.Add ('*', 39);
-		lettersMap.Add ('?', 40);
-		lettersMap.Add ('!', 41);
-		lettersMap.Add ('[', 42);
-		lettersMap.Add (']', 43);
-		lettersMap.Add ('\'', 44);
-		lettersMap.Add (':', 45);
-		lettersMap.Add (',', 46);
+		lettersMap.Add ('l', 23);
+		lettersMap.Add ('M', 24);
+		lettersMap.Add ('m', 25);
+		lettersMap.Add ('N', 26);
+		lettersMap.Add ('n', 27);
+		lettersMap.Add ('O', 28);
+		lettersMap.Add ('o', 29);
+		lettersMap.Add ('P', 30);
+		lettersMap.Add ('p', 31);
+		lettersMap.Add ('Q', 32);
+		lettersMap.Add ('q', 33);
+		lettersMap.Add ('R', 34);
+		lettersMap.Add ('r', 35);
+		lettersMap.Add ('S', 36);
+		lettersMap.Add ('s', 37);
+		lettersMap.Add ('T', 38);
+		lettersMap.Add ('t', 39);
+		lettersMap.Add ('U', 40);
+		lettersMap.Add ('u', 41);
+		lettersMap.Add ('V', 42);
+		lettersMap.Add ('v', 43);
+		lettersMap.Add ('W', 44);
+		lettersMap.Add ('w', 45);
+		lettersMap.Add ('X', 46);
+		lettersMap.Add ('x', 47);
+		lettersMap.Add ('Y', 48);
+		lettersMap.Add ('y', 49);
+		lettersMap.Add ('Z', 50);
+		lettersMap.Add ('z', 51);
+		lettersMap.Add ('1', 52);
+		lettersMap.Add ('2', 53);
+		lettersMap.Add ('3', 54);
+		lettersMap.Add ('4', 55);
+		lettersMap.Add ('5', 56);
+		lettersMap.Add ('6', 57);
+		lettersMap.Add ('7', 58);
+		lettersMap.Add ('8', 59);
+		lettersMap.Add ('9', 60);
+		lettersMap.Add ('0', 61);
+		lettersMap.Add ('\'', 62);
+		lettersMap.Add ('.', 63);
+		lettersMap.Add ('-', 64);
+		lettersMap.Add ('|', 65);
+		lettersMap.Add (',', 66);
+		lettersMap.Add ('!', 67);
+		lettersMap.Add (':', 68);
+		lettersMap.Add ('ñ', 69);
+		lettersMap.Add (' ', 70);
+
+
 	}
 
 	public Sprite GetLetter(char letter) {

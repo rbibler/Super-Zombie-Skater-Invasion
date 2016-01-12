@@ -3,10 +3,10 @@ using System.Collections;
 
 public class StartScreenButton : MonoBehaviour {
 
-	public string levelToLoad;
-	public LevelManager manager;
+
+	public StartScreen startScreen;
 	
 	void OnMouseDown() {
-		manager.LoadLevelByName(levelToLoad);
+		startScreen.FlashScreen ();
 	}
 }
