@@ -21,7 +21,7 @@ public class Skater : MonoBehaviour {
 	private bool space;
 	private bool spaceUp;
 	private Animator animator;
-	private static int lives = 3;
+	private static int lives = 1;
 	private static float score;
 
 
@@ -113,10 +113,19 @@ public class Skater : MonoBehaviour {
 		gameValues.SetSpeed(speed);
 	}
 	
+	public void SetYPos(float pos) {
+		transform.position = new Vector3(transform.position.x, pos);
+	}
+	
 	public void Die() {
 		lives--;
-		hud.UpdateLives(lives);
-		gameLoop.Die (GameLoopManager.DEATH_RELOAD);
+		int deathState = GameLoopManager.DEATH_RELOAD;
+		if(lives < 0) {
+			deathState = GameLoopManager.DEATH_CONTINUE;
+		} else {
+			hud.UpdateLives(lives);
+		}
+		gameLoop.Die (deathState);
 		Destroy (gameObject);
 	}
 }

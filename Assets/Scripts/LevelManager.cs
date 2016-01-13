@@ -24,6 +24,14 @@ public class LevelManager : MonoBehaviour {
 		Application.LoadLevel(name);
 	}
 	
+	public void ReloadPreviousLevel() {
+		if(previousLevel != null) {
+			Application.LoadLevel (previousLevel);
+		} else {
+			Application.LoadLevel ("01b Start Screen");
+		}
+	}
+	
 	public void Quit() {
 		print ("Quit");
 	}
