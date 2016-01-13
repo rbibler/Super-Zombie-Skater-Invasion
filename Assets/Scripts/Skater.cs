@@ -2,13 +2,18 @@
 using System.Collections;
 
 [RequireComponent (typeof (Animator))]
+[RequireComponent (typeof (Skater))]
 public class Skater : MonoBehaviour {
 
 
 	public float skateAccel;
 	public float jumpAccel;
 	public float jumpAccelIncrease;
+	public float speed;
+	public float scoreMultiplier;
 	public GameValues gameValues;
+	public GameLoopManager gameLoop;
+	public HUDManager hud;
 
 	private int state;
 	private float potentialJumpAccel = 6;
@@ -16,6 +21,8 @@ public class Skater : MonoBehaviour {
 	private bool space;
 	private bool spaceUp;
 	private Animator animator;
+	private static int lives = 3;
+	private static float score;
 
 
 	public const int STATE_SKATING = 0x00;
@@ -27,13 +34,15 @@ public class Skater : MonoBehaviour {
 	void Start () {
 		state = STATE_SKATING;
 		animator = GetComponent<Animator> ();
-
+		hud.UpdateLives(lives);
+		gameValues.speed = speed;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		HandleInput ();
 		SetAnimState ();
+		UpdateScore();
 	}
 
 	void SetAnimState() {
@@ -83,6 +92,11 @@ public class Skater : MonoBehaviour {
 		transform.rigidbody2D.velocity = Vector3.up * potentialJumpAccel;
 		potentialJumpAccel = 6;
 	}
+	
+	void UpdateScore() {
+		score += (scoreMultiplier * -gameValues.speed * Time.deltaTime);
+		hud.UpdateScore(score);
+	}
 
 	void OnCollisionEnter2D(Collision2D col) {
 		Vector2 contactNormal = col.contacts [0].normal;
@@ -96,6 +110,13 @@ public class Skater : MonoBehaviour {
 
 	void StandUp() {
 		state = STATE_SKATING;
-		gameValues.ResetSpeed ();
+		gameValues.SetSpeed(speed);
+	}
+	
+	public void Die() {
+		lives--;
+		hud.UpdateLives(lives);
+		gameLoop.Die (GameLoopManager.DEATH_RELOAD);
+		Destroy (gameObject);
 	}
 }
