@@ -13,6 +13,19 @@ public class HUDManager : MonoBehaviour {
 	public Sprite[] hudDigits;
 	public Sprite[] hudMeterBars;
 
+	private Vector3 pos;
+
+	void Start() {
+		pos = transform.position;
+	}
+
+	void Update() {
+		pos.x = Camera.main.transform.position.x - 26.625f;
+		pos.y = Camera.main.transform.position.y - 15f;
+		transform.position = pos;
+	}
+
+
 
 	public void UpdateHealth(float health) {
 		int fullBars = (int) (14 * health);
