@@ -12,6 +12,7 @@ public class Skater : MonoBehaviour {
 	public float speed;
 	public float scoreMultiplier;
 	public float maxVerticalVelocity;
+	public float slamRegenTime;
 	public float slamSpeed;
 	public GameValues gameValues;
 	public GameLoopManager gameLoop;
@@ -19,7 +20,9 @@ public class Skater : MonoBehaviour {
 
 	private int state;
 	private float potentialJumpAccel = 6;
+	private float slamMeter;
 	private bool down;
+	private bool slamAllowed;
 	private bool space;
 	private bool spaceUp;
 	private Animator animator;
@@ -41,6 +44,8 @@ public class Skater : MonoBehaviour {
 		hud.UpdateLives(lives);
 		gameValues.speed = speed;
 		hud.UpdateHealth (1f);
+		hud.UpdateSlam (1f);
+		slamMeter = 1f;
 	}
 	
 	// Update is called once per frame
@@ -80,7 +85,7 @@ public class Skater : MonoBehaviour {
 		case STATE_JUMPING: 
 			if(space) {
 				Crouch (false);
-			} else if(down) {
+			} else if(down && slamAllowed) {
 				InitiateSlam();
 			}
 			break;
@@ -100,6 +105,11 @@ public class Skater : MonoBehaviour {
 	void Jump() {
 		state = STATE_JUMPING;
 		transform.rigidbody2D.velocity = Vector3.up * potentialJumpAccel;
+		if (potentialJumpAccel < .5f * jumpAccel) {
+			slamAllowed = false;
+		} else if (slamMeter == 1.0f) {
+			slamAllowed = true;
+		}
 		potentialJumpAccel = 6;
 	}
 	
@@ -115,12 +125,23 @@ public class Skater : MonoBehaviour {
 		}
 		Vector2 contactNormal = col.contacts [0].normal;
 		if (contactNormal.normalized.y == 1.0) {
-			state = STATE_SKATING;
-			gameValues.SetSpeed (speed);
+			Land ();
 		} else if (contactNormal.normalized.x == -1.0 && state != STATE_BAILING) {
-			state = STATE_BAILING;
-			gameValues.SetSpeed(0);
+			BashHead();
 		}
+	}
+
+	void Land() {
+		if(state == STATE_SLAMMING) {
+			InvokeRepeating ("FillSlam", slamRegenTime, slamRegenTime);
+		}
+		state = STATE_SKATING;
+		gameValues.SetSpeed (speed);
+	}
+
+	void BashHead() {
+		state = STATE_BAILING;
+		gameValues.SetSpeed(0);
 	}
 
 	void StandUp() {
@@ -154,11 +175,34 @@ public class Skater : MonoBehaviour {
 		state = STATE_FLIPPING;
 		rigidbody2D.gravityScale = 0;
 		rigidbody2D.velocity = new Vector3 (0, 0);
+		slamAllowed = false;
+		slamMeter = 0;
+		hud.UpdateSlam (slamMeter);
 	}
+
+	/*
+	 * But but but wait it gets worse!
+	 * I'm not watered down so I'm dying of thirst
+	 * Coming through with the scam,
+	 * Fool proof plan
+	 * B-boys make some noise
+	 * and just, JUST...
+	 */
 
 	void Slam() {
 		rigidbody2D.velocity = Vector3.down * slamSpeed;
 		state = STATE_SLAMMING;
 		rigidbody2D.gravityScale = 1;
+	}
+
+	void FillSlam() {
+		if (slamMeter>= 1) {
+			CancelInvoke ();
+			slamAllowed = true;
+			slamMeter = 1.0f;
+		} else {
+			slamMeter += 1.0f / 14.0f;
+			hud.UpdateSlam(slamMeter);
+		}
 	}
 }

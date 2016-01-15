@@ -17,10 +17,16 @@ public class MainCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		float centerY = skater.transform.position.y;
-		if (centerY >= halfHeight) {
-			pos.y = centerY;
-			this.transform.position = pos;
+		if (!skater) {
+			return;
 		}
+		float centerY = skater.transform.position.y;
+		if (centerY >= 15) {
+			pos.y = centerY;
+
+		} else if(centerY <= 15) {
+			pos.y = 15;
+		}
+		this.transform.position = pos;
 	}
 }
