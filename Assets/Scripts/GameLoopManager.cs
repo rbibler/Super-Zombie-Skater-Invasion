@@ -7,7 +7,7 @@ public class GameLoopManager : MonoBehaviour {
 	public GameValues gameValues;
 	public AnimatedFader fader;
 	public LevelManager manager;
-	public AudioSource levelAudioSource;
+	public Song levelAudioSource;
 	public float deathPause;
 	public const int DEATH_RELOAD = 1;
 	public const int DEATH_CONTINUE = 2;

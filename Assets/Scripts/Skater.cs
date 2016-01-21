@@ -21,6 +21,7 @@ public class Skater : MonoBehaviour {
 	private int state;
 	private float potentialJumpAccel = 6;
 	private float slamMeter;
+	private float health;
 	private bool down;
 	private bool slamAllowed;
 	private bool space;
@@ -46,6 +47,7 @@ public class Skater : MonoBehaviour {
 		hud.UpdateHealth (1f);
 		hud.UpdateSlam (1f);
 		slamMeter = 1f;
+		health = 100;
 	}
 	
 	// Update is called once per frame
@@ -119,17 +121,40 @@ public class Skater : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
-		if(col.collider.gameObject.GetComponent<BouncyBlocks>()) {
+		if (CheckForEnemyCollision (col)) {
+			return;
+		} else if (CheckForBouncyCollision (col)) {
 			state = STATE_JUMPING;
 			return;
-		}
-		Vector2 contactNormal = col.contacts [0].normal;
-		if (contactNormal.normalized.y == 1.0) {
+		} else if (CheckForGroundCollision (col)) {
 			Land ();
-		} else if (contactNormal.normalized.x == -1.0 && state != STATE_BAILING) {
-			BashHead();
 		}
+
+		// STILL NEED TO HANDLE NON-ENEMY OBJECT COLLISIONS
 	}
+
+	bool CheckForEnemyCollision(Collision2D col) {
+		Enemy enemy = col.gameObject.GetComponent<Enemy> ();
+		if (!enemy) {
+			return false;
+		}
+		TakeDamage (enemy.damage);
+		return true;
+	}
+
+	bool CheckForBouncyCollision(Collision2D col) {
+		return (col.collider.gameObject.GetComponent<BouncyBlocks> () != null);
+	}
+
+	bool CheckForGroundCollision(Collision2D col) {
+		Vector2 contactNormal = col.contacts [0].normal;
+		return contactNormal.normalized.y == 1.0;
+	}
+
+	/*bool CheckForCollidableObjectCollision(Collision2D col) {
+		CollidableObject obj = 
+	}*/
+
 
 	void Land() {
 		if(state == STATE_SLAMMING) {
@@ -139,8 +164,15 @@ public class Skater : MonoBehaviour {
 		gameValues.SetSpeed (speed);
 	}
 
-	void BashHead() {
+	void TakeDamage(float damageToTake) {
+		health -= damageToTake;
+		print (health);
+		hud.UpdateHealth (health / 100.0f);
+		if (health <= 0) {
+			Die ();
+		}
 		state = STATE_BAILING;
+		animator.SetTrigger ("Bail");
 		gameValues.SetSpeed(0);
 	}
 
