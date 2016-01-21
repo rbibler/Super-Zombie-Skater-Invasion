@@ -28,6 +28,10 @@ public class HUDManager : MonoBehaviour {
 
 
 	public void UpdateHealth(float health) {
+		if(health <= 0) {
+			health = 0;
+		}
+		
 		int fullBars = (int) (14 * health);
 		int whichBar;
 		for (int i = 0; i < skaterHealth.Length; i++) {

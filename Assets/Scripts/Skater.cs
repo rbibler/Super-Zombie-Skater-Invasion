@@ -14,6 +14,7 @@ public class Skater : MonoBehaviour {
 	public float maxVerticalVelocity;
 	public float slamRegenTime;
 	public float slamSpeed;
+	public float infectionSpreadRate;
 	public GameValues gameValues;
 	public GameLoopManager gameLoop;
 	public HUDManager hud;
@@ -26,6 +27,7 @@ public class Skater : MonoBehaviour {
 	private bool slamAllowed;
 	private bool space;
 	private bool spaceUp;
+	private bool infected;
 	private Animator animator;
 	private static int lives = 1;
 	private static float score;
@@ -57,7 +59,8 @@ public class Skater : MonoBehaviour {
 		} 
 		HandleInput ();
 		SetAnimState ();
-		UpdateScore();
+		UpdateScore(scoreMultiplier * -gameValues.speed * Time.deltaTime);
+		CheckInfection();
 	}
 
 	void SetAnimState() {
@@ -115,22 +118,35 @@ public class Skater : MonoBehaviour {
 		potentialJumpAccel = 6;
 	}
 	
-	void UpdateScore() {
-		score += (scoreMultiplier * -gameValues.speed * Time.deltaTime);
+	void UpdateScore(float scoreToAdd) {
+		score += scoreToAdd;
 		hud.UpdateScore(score);
+	}
+	
+	void CheckInfection() {
+		if(infected) {
+			UpdateHealth(health - (infectionSpreadRate * Time.deltaTime));
+		}
+	}
+	
+	void UpdateHealth(float health) {
+		this.health = health;
+		hud.UpdateHealth(health / 100.0f);
+		if(health <= 0) {
+			Die ();
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
+		// Always check to see if we've landed
+		CheckForGroundCollision (col);
+		CheckForBouncyCollision (col);
+		CheckForPowerupCollision(col);
 		if (CheckForEnemyCollision (col)) {
 			return;
-		} else if (CheckForBouncyCollision (col)) {
-			state = STATE_JUMPING;
-			return;
-		} else if (CheckForGroundCollision (col)) {
-			Land ();
-		}
-
-		// STILL NEED TO HANDLE NON-ENEMY OBJECT COLLISIONS
+		} else {
+			CheckForBGObjectCollision(col);
+		} 
 	}
 
 	bool CheckForEnemyCollision(Collision2D col) {
@@ -138,25 +154,53 @@ public class Skater : MonoBehaviour {
 		if (!enemy) {
 			return false;
 		}
-		TakeDamage (enemy.damage);
+		if(state == STATE_SLAMMING) {
+			enemy.Die ();
+			UpdateScore (enemy.bonusForKilling);
+			return false;
+		} else if(enemy.isDangerous) {
+			TakeDamage (enemy.damage);
+			if(enemy.isZombie) {
+				infected = true;
+			}
+		}
 		return true;
 	}
 
-	bool CheckForBouncyCollision(Collision2D col) {
-		return (col.collider.gameObject.GetComponent<BouncyBlocks> () != null);
+	void CheckForBouncyCollision(Collision2D col) {
+		BouncyBlocks bouncy = col.collider.gameObject.GetComponent<BouncyBlocks>();
+		if(bouncy != null) {
+			state = STATE_JUMPING;
+		}
 	}
 
-	bool CheckForGroundCollision(Collision2D col) {
+	void CheckForGroundCollision(Collision2D col) {
 		Vector2 contactNormal = col.contacts [0].normal;
-		return contactNormal.normalized.y == 1.0;
+		if(contactNormal.normalized.y == 1.0) {
+			Land ();
+		}
 	}
 
-	/*bool CheckForCollidableObjectCollision(Collision2D col) {
-		CollidableObject obj = 
-	}*/
+	void CheckForBGObjectCollision(Collision2D col) {
+		CollidableObject collidableObj = col.gameObject.GetComponent<CollidableObject>();
+		Vector2 contactNormal = col.contacts[0].normal;
+		if(!collidableObj) {
+			return;
+		} 
+		if(contactNormal.normalized.y == -1.0 || contactNormal.normalized.x == -1.0) {
+			TakeDamage (collidableObj.damage);
+		}
+	}
+	
+	void CheckForPowerupCollision(Collision2D col) {
+	
+	}
 
 
 	void Land() {
+		if(state == STATE_BAILING) {
+			return;
+		}
 		if(state == STATE_SLAMMING) {
 			InvokeRepeating ("FillSlam", slamRegenTime, slamRegenTime);
 		}
@@ -165,15 +209,10 @@ public class Skater : MonoBehaviour {
 	}
 
 	void TakeDamage(float damageToTake) {
-		health -= damageToTake;
-		print (health);
-		hud.UpdateHealth (health / 100.0f);
-		if (health <= 0) {
-			Die ();
-		}
 		state = STATE_BAILING;
 		animator.SetTrigger ("Bail");
 		gameValues.SetSpeed(0);
+		UpdateHealth (health - damageToTake);
 	}
 
 	void StandUp() {
