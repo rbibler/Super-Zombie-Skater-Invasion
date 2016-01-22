@@ -58,8 +58,12 @@ public class Song : MonoBehaviour {
 	}
 
 	public void Stop() {
-		sourceOne.Stop ();
-		sourceTwo.Stop ();
+		if (sourceOne) {
+			sourceOne.Stop ();
+		}
+		if (sourceTwo) {
+			sourceTwo.Stop ();
+		}
 	}
 
 }

@@ -30,6 +30,7 @@ public class Skater : MonoBehaviour {
 	private bool infected;
 	private Animator animator;
 	private static int lives = 1;
+	private static int coins;
 	private static float score;
 
 
@@ -45,6 +46,7 @@ public class Skater : MonoBehaviour {
 		state = STATE_SKATING;
 		animator = GetComponent<Animator> ();
 		hud.UpdateLives(lives);
+		hud.UpdateCoins (coins);
 		gameValues.speed = speed;
 		hud.UpdateHealth (1f);
 		hud.UpdateSlam (1f);
@@ -118,7 +120,7 @@ public class Skater : MonoBehaviour {
 		potentialJumpAccel = 6;
 	}
 	
-	void UpdateScore(float scoreToAdd) {
+	public void UpdateScore(float scoreToAdd) {
 		score += scoreToAdd;
 		hud.UpdateScore(score);
 	}
@@ -131,6 +133,9 @@ public class Skater : MonoBehaviour {
 	
 	void UpdateHealth(float health) {
 		this.health = health;
+		if (health >= 100) {
+			health = 100;
+		}
 		hud.UpdateHealth(health / 100.0f);
 		if(health <= 0) {
 			Die ();
@@ -275,5 +280,26 @@ public class Skater : MonoBehaviour {
 			slamMeter += 1.0f / 14.0f;
 			hud.UpdateSlam(slamMeter);
 		}
+	}
+
+	public void UpdateLives(int livesToAdd) {
+		lives += livesToAdd;
+		hud.UpdateLives (lives);
+	} 
+
+	public void AddCoin(float scoreToAdd) {
+		UpdateScore (scoreToAdd);
+		coins++;
+		if (coins == 100) {
+			UpdateLives(1);
+			coins = 0;
+		}
+		hud.UpdateCoins (coins);
+	}
+
+	public void UpdateHealthFromPowerUp(float healthToIncrease, float scoreToAdd) {
+		infected = false;
+		UpdateHealth (health + healthToIncrease);
+		UpdateScore (scoreToAdd);
 	}
 }

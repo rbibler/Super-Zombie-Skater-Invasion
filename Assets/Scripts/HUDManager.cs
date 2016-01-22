@@ -87,19 +87,11 @@ public class HUDManager : MonoBehaviour {
 	}
 	
 	public void UpdateCoins(int coinTally) {
-		int hundredThousands = coinTally / 100000;
-		int tenThousands = (coinTally % 100000) / 10000;
-		int thousands = (coinTally % 10000) / 1000;
-		int hundreds = (coinTally % 1000) / 100;
+
 		int tens = (coinTally % 100) / 10;
 		int ones = coinTally % 10;
-		
-		coinDigits[0].GetComponent<SpriteRenderer>().sprite = hudDigits[hundredThousands];
-		coinDigits[1].GetComponent<SpriteRenderer>().sprite = hudDigits[tenThousands];
-		coinDigits[2].GetComponent<SpriteRenderer>().sprite = hudDigits[thousands];
-		coinDigits[3].GetComponent<SpriteRenderer>().sprite = hudDigits[hundreds];
-		coinDigits[4].GetComponent<SpriteRenderer>().sprite = hudDigits[tens];
-		coinDigits[5].GetComponent<SpriteRenderer>().sprite = hudDigits[ones];
+		coinDigits[0].GetComponent<SpriteRenderer>().sprite = hudDigits[tens];
+		coinDigits[1].GetComponent<SpriteRenderer>().sprite = hudDigits[ones];
 	}
 	
 	public void UpdateLives(int lives) {
