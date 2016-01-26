@@ -7,15 +7,25 @@ public class LinearLeftEnemy : MonoBehaviour {
 	public GameValues values;
 
 	private Vector3 pos;
+	private SpriteRenderer spriteRenderer;
 
 	// Use this for initialization
 	void Start () {
 		pos = transform.position;
+		spriteRenderer = GetComponentInChildren<SpriteRenderer> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		pos.x += (values.speed + xVel) * Time.deltaTime;
+		pos.y = transform.position.y;
+		float posToMove = values.speed;
+		if (spriteRenderer.isVisible) {
+			posToMove += xVel;
+		}
+		pos.x += posToMove * Time.deltaTime;
 		transform.position = pos;
 	}
+
+
+	
 }

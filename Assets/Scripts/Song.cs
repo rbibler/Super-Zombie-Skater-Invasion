@@ -26,7 +26,6 @@ public class Song : MonoBehaviour {
 		sourceOne.PlayScheduled(AudioSettings.dspTime);
 		sourceOne.SetScheduledEndTime (introEndTime);
 		Invoke ("SetupLoop", 2.0f);
-		print ("Intro End: " + introEndTime + " Next Loop Swap: " + nextLoopSwap);
 	}
 
 	void SetupLoop() {
@@ -42,13 +41,11 @@ public class Song : MonoBehaviour {
 	void SwapLoop() {
 
 		if (sourceOneOn) {
-			print ("Swapping Loop 2");
 			sourceTwo.timeSamples = introEndInSamples;
 			sourceTwo.PlayScheduled (nextLoopSwap);
 			nextLoopSwap += loopTime;
 			sourceTwo.SetScheduledEndTime(nextLoopSwap);
 		} else {
-			print ("Swapping Loop One");
 			sourceOne.timeSamples = introEndInSamples;
 			sourceOne.PlayScheduled(nextLoopSwap);
 			nextLoopSwap += loopTime;

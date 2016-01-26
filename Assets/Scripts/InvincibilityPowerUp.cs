@@ -1,27 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (PowerUp))]
 [RequireComponent (typeof (Animator))]
-public class Coin : MonoBehaviour {
+public class InvincibilityPowerUp : MonoBehaviour {
 
-	public float scoreIncrease;
+	public float invincibilityDuration;
 
 	private Animator animator;
-	void Start() {
+
+
+	// Use this for initialization
+	void Start () {
 		animator = GetComponent<Animator> ();
 	}
-
+	
 	void OnTriggerEnter2D(Collider2D col) {
 		Skater skater = col.gameObject.GetComponent<Skater> ();
 		if (!skater) {
 			return;
 		}
-		skater.AddCoin (scoreIncrease);
+		skater.SetInvincibility (invincibilityDuration);
 		animator.SetTrigger ("collected");
 	}
 
-	private void DestroyMe() {
+	void DestroyMe() {
 		Destroy (gameObject);
 	}
 }

@@ -8,6 +8,6 @@ public class GameEndTrigger : MonoBehaviour {
 		if(!skater) {
 			return;
 		}
-		skater.Die ();
+		skater.FellIntoGap ();
 	}
 }
