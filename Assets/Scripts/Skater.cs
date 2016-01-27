@@ -4,9 +4,7 @@ using System.Collections;
 [RequireComponent (typeof (Animator))]
 [RequireComponent (typeof (Skater))]
 public class Skater : MonoBehaviour {
-
-
-	public float skateAccel;
+	
 	public float jumpAccel;
 	public float jumpAccelIncrease;
 	public float speed;
@@ -26,18 +24,15 @@ public class Skater : MonoBehaviour {
 	public AudioClip flipClip;
 	public AudioClip deathClip;
 	public Song levelSong;
-	[Range (0, 0x3F)]
-	public int colorToRender;
 
 	private int state;
-	private int lastState;
 	private float potentialJumpAccel = 6;
 	private float slamMeter;
 	private float health;
 	private bool down;
 	private bool slamAllowed;
-	private bool space;
-	private bool spaceUp;
+	private bool jumpButtonDown;
+	private bool jumpButtonUp;
 	private bool infected;
 	private bool isInvincible;
 	private bool fallingDetectedLast;
@@ -49,7 +44,6 @@ public class Skater : MonoBehaviour {
 	private static int coins;
 	private static float score;
 	private Color[] colors = new Color[] {new Color(.533f, .07843f, 0), new Color(1, 1, 1)};
-	private int[] infectionColors = new int[] {60, 42, 34, 0x3C, 24, 0x2D, 0x10, 0x20 ,0x3D, 0x30};
 	private int colorCounter = 0;
 	private SpriteRenderer renderer;
 	private float lastFlash;
@@ -57,7 +51,6 @@ public class Skater : MonoBehaviour {
 	private float distanceToGround;
 	private Vector3 pos;
 	private RaycastHit2D groundHit;
-	public Color skinColor;
 
 	public const int STATE_SKATING = 0x00;
 	public const int STATE_CROUCHING = 0x01;
@@ -146,20 +139,20 @@ public class Skater : MonoBehaviour {
 	void HandleInput() {
 		switch (state) {
 		case STATE_SKATING:
-			if(space) {
+			if(jumpButtonDown) {
 				Crouch(true);
 			}
 			break;
 		case STATE_CROUCHING:
-			if(space) {
+			if(jumpButtonDown) {
 				Crouch(true);
-			} else if(spaceUp) {
+			} else if(jumpButtonUp) {
 				Jump ();
 			}
 			break;
 		case STATE_JUMPING: 
 		case STATE_FALLING:
-			if(space) {
+			if(jumpButtonDown) {
 				Crouch (false);
 			} else if(down && slamAllowed) {
 				InitiateSlam();
@@ -229,33 +222,10 @@ public class Skater : MonoBehaviour {
 	}
 	
 	void CheckInfection() {
-		if(infected) {
-			UpdateHealth(health - (infectionSpreadRate * Time.deltaTime));
-			int colorToGet = (int) (health / 10);
-			if(renderer.sprite == null) {
-				return;
-			}
-			Texture2D texture = renderer.sprite.texture;
-			Color[] colors = renderer.sprite.texture.GetPixels ();
-			Color newColor = NESColorPalette.GetColor (infectionColors[colorToGet]);
-			if(colors != null) {
-				Color color;
-				for(int i = 0; i < colors.Length; i++) {
-					color = colors[i];
-					if(color == skinColor) {
-						colors[i] = newColor;
-					}
-				}
-				texture.SetPixels(colors);
-				texture.Apply();
-			}
-			skinColor = newColor;
-			//renderer.color = NESColorPalette.GetColor(infectionColors[colorToGet]);
+		if (!infected) {
+			return;
 		}
-	}
-
-	void UpdateColors() {
-
+		UpdateHealth (health - (infectionSpreadRate * Time.deltaTime));
 	}
 	
 	void UpdateHealth(float health) {
@@ -380,8 +350,8 @@ public class Skater : MonoBehaviour {
 
 	public void SetInput(bool down, bool space, bool spaceUp) {
 		this.down = down;
-		this.space = space;
-		this.spaceUp = spaceUp;
+		this.jumpButtonDown = space;
+		this.jumpButtonUp = spaceUp;
 	}
 	
 	public void SetYPos(float pos) {
