@@ -52,14 +52,14 @@ public class Skater : MonoBehaviour {
 	private Vector3 pos;
 	private RaycastHit2D groundHit;
 
-	public const int STATE_SKATING = 0x00;
+	public const int STATE_SKATING =   0x00;
 	public const int STATE_CROUCHING = 0x01;
-	public const int STATE_JUMPING = 0x02;
-	public const int STATE_BAILING = 0x03;
-	public const int STATE_FLIPPING = 0x04;
-	public const int STATE_SLAMMING = 0x05;
-	public const int STATE_FALLING = 0x06;
-	
+	public const int STATE_JUMPING =   0x02;
+	public const int STATE_BAILING =   0x03;
+	public const int STATE_FLIPPING =  0x04;
+	public const int STATE_SLAMMING =  0x05;
+	public const int STATE_FALLING =   0x06;
+
 	// Use this for initialization
 	void Start () {
 		SetState(STATE_SKATING);
@@ -226,6 +226,20 @@ public class Skater : MonoBehaviour {
 			return;
 		}
 		UpdateHealth (health - (infectionSpreadRate * Time.deltaTime));
+		if (health < 25) {
+			SetAnimLayer(3);
+		} else if (health < 50) {
+			SetAnimLayer(2);
+		} else {
+			SetAnimLayer(1);
+		}
+	}
+
+	void SetAnimLayer(int layer) {
+		for (int i = 0; i < 4; i++) {
+			animator.SetLayerWeight(i, 0);
+		}
+		animator.SetLayerWeight (layer, 1);
 	}
 	
 	void UpdateHealth(float health) {
