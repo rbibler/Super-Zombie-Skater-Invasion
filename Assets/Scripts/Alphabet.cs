@@ -87,6 +87,7 @@ public class Alphabet : MonoBehaviour {
 		lettersMap.Add (':', 68);
 		lettersMap.Add ('ñ', 69);
 		lettersMap.Add (' ', 70);
+		lettersMap.Add ('_', 71);
 
 
 	}
