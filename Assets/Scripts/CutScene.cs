@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-public class CutScene : MonoBehaviour, IListener {
+public class CutScene : MonoBehaviour, IListener, IInputListener {
 
 	public Alphabet alphabet;
 	public Letter letter;
@@ -15,10 +15,25 @@ public class CutScene : MonoBehaviour, IListener {
 	private int currentCardIndex;
 	private bool waitingOnFader;
 	private bool finishOnNextFade;
+	private InputHandler handler;
 
 	void Start() {
 		currentCard = cards [0];
 		fader.RegisterListener (this);
+		SetupInputHandler ();
+	}
+
+	void SetupInputHandler() {
+		GameObject handlerParent = GameObject.Find ("InputHandler");
+		if (!handlerParent) {
+			handlerParent = new GameObject();
+			handlerParent.name = "InputHandler";
+			handlerParent.AddComponent("InputHandler");	
+			handlerParent.transform.parent = transform.parent;
+			
+		} 
+		handler = handlerParent.GetComponent<InputHandler>();
+		handler.RegisterListener (this);
 	}
 
 	void Update() {
@@ -57,8 +72,10 @@ public class CutScene : MonoBehaviour, IListener {
 		currentCard = cards [currentCardIndex];
 	}
 
-	void OnMouseDown() {
-		EndScene ();
+	public void OnInput(bool[] inputs) {
+		if (inputs [3]) {
+			EndScene();
+		}
 	}
 
 	void EndScene() {

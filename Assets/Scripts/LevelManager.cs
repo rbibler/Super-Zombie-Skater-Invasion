@@ -48,4 +48,9 @@ public class LevelManager : MonoBehaviour {
 		fader.StartFadeAnimation(faderType);
 		Invoke ("LoadNextLevel", fadeDelay);
 	}
+
+	public void LoadLevelByNameWithDelay(string levelToLoad, float delay) {
+		levelToLoadNext = levelToLoad;
+		Invoke ("LoadNextLevel", delay);
+	}
 }

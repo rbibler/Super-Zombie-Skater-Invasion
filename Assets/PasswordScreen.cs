@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Text;
 
-public class PasswordScreen : MonoBehaviour {
+public class PasswordScreen : MonoBehaviour, IInputListener {
 
 	public int charsWide;
 	public int charsHigh;
@@ -11,11 +11,21 @@ public class PasswordScreen : MonoBehaviour {
 	public Vector2 startPos;
 	public Letter[] hangmanLetters;
 	public Alphabet alphabet;
+	public PasswordManager manager;
+	public Sprite spaceSprite;
+	public GameObject successMessage;
+	public GameObject failureMessage;
+	public GameObject hangman;
 	
 	private Vector2 currentPos;
 	private Vector2 gridPos = new Vector2(0, 0);
 	private int currentHangmanPos;
 	private char[] password = "                ".ToCharArray();
+	private InputHandler handler;
+	private float lastVeritcalMove;
+	private float lastHorizontalMove;
+	private float lastEnter;
+	private float delayAllowed = .25f;
 
 	private char[,] passwordInputArray = new char[,] {
 		{'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'Z', 'z'},
@@ -29,23 +39,33 @@ public class PasswordScreen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		currentPos = new Vector2(startPos.x, startPos.y);
+		SetupInputHandler ();
+		lastVeritcalMove = lastHorizontalMove = lastEnter = Time.timeSinceLevelLoad;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		CheckInput();
+
+	void SetupInputHandler() {
+		GameObject handlerParent = GameObject.Find ("InputHandler");
+		if (!handlerParent) {
+			handlerParent = new GameObject();
+			handlerParent.name = "InputHandler";
+			handlerParent.AddComponent("InputHandler");	
+			handlerParent.transform.parent = transform.parent;
+			
+		} 
+		handler = handlerParent.GetComponent<InputHandler>();
+		handler.RegisterListener (this);
 	}
-	
-	void CheckInput() {
-		if (Input.GetKeyUp (KeyCode.DownArrow)) {
+
+	public void OnInput(bool[] inputs) {
+		if (inputs[5]) {
 			MoveCursorVertical (-2);
-		} else if (Input.GetKeyUp (KeyCode.UpArrow)) {
+		} else if (inputs[4]) {
 			MoveCursorVertical (2);
-		} else if (Input.GetKeyUp (KeyCode.LeftArrow)) {
+		} else if (inputs[6]) {
 			MoveCursorHoriz (-2);
-		} else if (Input.GetKeyUp (KeyCode.RightArrow)) {
+		} else if (inputs[7]) {
 			MoveCursorHoriz (2);
-		} else if (Input.GetKeyUp (KeyCode.Return)) {
+		} else if (inputs[1]) {
 			CheckInputConfirm();
 		}
 		cursor.transform.position = currentPos;
@@ -64,6 +84,10 @@ public class PasswordScreen : MonoBehaviour {
 	}
 	
 	void MoveCursorVertical(int direction) {
+		if (Time.timeSinceLevelLoad - lastVeritcalMove < delayAllowed) {
+			return;
+		}
+		lastVeritcalMove = Time.timeSinceLevelLoad;
 		currentPos.y += direction;
 		if(currentPos.y < (startPos.y - charsHigh) && direction < 0) {
 			currentPos.y = startPos.y;
@@ -73,6 +97,10 @@ public class PasswordScreen : MonoBehaviour {
 	}
 	
 	void MoveCursorHoriz(int direction) {
+		if (Time.timeSinceLevelLoad - lastHorizontalMove < delayAllowed) {
+			return;
+		}
+		lastHorizontalMove = Time.timeSinceLevelLoad;
 		currentPos.x += direction;
 		print (gridPos);
 		if(currentPos.x > (startPos.x + charsWide) || (gridPos.x >= 10 && direction > 0 && gridPos.y >= 2)) {
@@ -87,6 +115,10 @@ public class PasswordScreen : MonoBehaviour {
 	}
 
 	void CheckInputConfirm() {
+		if (Time.timeSinceLevelLoad - lastEnter < delayAllowed) {
+			return;
+		}
+		lastEnter = Time.timeSinceLevelLoad;
 		char c = GetPasswordInput ();
 		if (c == '!') {
 			HangmanBack ();
@@ -95,17 +127,45 @@ public class PasswordScreen : MonoBehaviour {
 		} else if (c == '%') {
 			Delete ();
 		} else if (c == '*') {
-			CreateOutput();
+			if(manager.CheckPassword(CreateOutput())) {
+				DisplayMessage(successMessage);
+				handler.UnregisterListener(this);
+			} else {
+				DisplayMessage(failureMessage);
+				Invoke ("ClearMessage", 2.0f);
+			}
 		} else {
 			HandleAlphabeticEntry();
 		}
 	}
+
+	void DisplayMessage(GameObject message) {
+		hangman.SetActive (false);
+		message.SetActive (true);
+		hangmanCursor.SetActive (false);
+	}
+
+	void ClearMessage() {
+		hangman.SetActive (true);
+		hangmanCursor.SetActive (true);
+		failureMessage.SetActive (false);
+		foreach (Letter letter in hangmanLetters) {
+			letter.GetComponentInChildren<SpriteRenderer>().sprite = spaceSprite;
+		}
+		currentHangmanPos = 0;
+		UpdateHangmanCursor ();
+	}
+
+	void UpdateHangmanCursor() {
+		hangmanCursor.transform.position = hangmanLetters [currentHangmanPos].transform.position;
+	}
+
 	char GetPasswordInput() {
 			return passwordInputArray [(int)gridPos.y, (int)gridPos.x];
 	}
 
 	void Delete() {
-		SetHangmanLetter ('_');
+		SetHangmanLetter (' ');
 	}
 
 	void HangmanBack() {
@@ -113,7 +173,7 @@ public class PasswordScreen : MonoBehaviour {
 		if (currentHangmanPos < 0) {
 			currentHangmanPos = hangmanLetters.Length - 1;
 		}
-		hangmanCursor.transform.position = hangmanLetters [currentHangmanPos].transform.position;
+		UpdateHangmanCursor ();
 	}
 
 	void HangmanNext() {
@@ -121,7 +181,7 @@ public class PasswordScreen : MonoBehaviour {
 		if (currentHangmanPos >= hangmanLetters.Length) {
 			currentHangmanPos = 0;
 		}
-		hangmanCursor.transform.position = hangmanLetters [currentHangmanPos].transform.position;
+		UpdateHangmanCursor ();
 	}
 
 	void HandleAlphabeticEntry() {
@@ -131,11 +191,16 @@ public class PasswordScreen : MonoBehaviour {
 	}
 
 	void SetHangmanLetter(char charToSet) {
-		Sprite s = alphabet.GetLetter (charToSet);
+		Sprite s = null;
+		if (charToSet == ' ') {
+			s = spaceSprite;
+		} else {
+			s = alphabet.GetLetter (charToSet);
+		}
 		if (s == null) {
 			return;
 		}
-		hangmanLetters[currentHangmanPos].GetComponentsInChildren<SpriteRenderer> ()[0].sprite = s;
+		hangmanLetters[currentHangmanPos].GetComponentInChildren<SpriteRenderer> ().sprite = s;
 		password [currentHangmanPos] = charToSet;
 	}
 
@@ -145,6 +210,6 @@ public class PasswordScreen : MonoBehaviour {
 			builder.Append(c);
 		}
 		print (builder.ToString ());
-		return builder.ToString ();
+		return builder.ToString ().TrimEnd();
 	}
 }

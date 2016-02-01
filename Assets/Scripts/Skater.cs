@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent (typeof (Animator))]
 [RequireComponent (typeof (Skater))]
-public class Skater : MonoBehaviour {
+public class Skater : MonoBehaviour, IInputListener {
 	
 	public float jumpAccel;
 	public float jumpAccelIncrease;
@@ -29,7 +29,7 @@ public class Skater : MonoBehaviour {
 	private float potentialJumpAccel = 6;
 	private float slamMeter;
 	private float health;
-	private bool down;
+	private bool slamButton;
 	private bool slamAllowed;
 	private bool jumpButtonDown;
 	private bool jumpButtonUp;
@@ -40,7 +40,7 @@ public class Skater : MonoBehaviour {
 	private bool dieOnGetUp;
 	private bool onGround;
 	private Animator animator;
-	private static int lives = 1;
+	public static int lives = 1;
 	private static int coins;
 	private static float score;
 	private Color[] colors = new Color[] {new Color(.533f, .07843f, 0), new Color(1, 1, 1)};
@@ -51,6 +51,7 @@ public class Skater : MonoBehaviour {
 	private float distanceToGround;
 	private Vector3 pos;
 	private RaycastHit2D groundHit;
+	private InputHandler handler;
 
 	public const int STATE_SKATING =   0x00;
 	public const int STATE_CROUCHING = 0x01;
@@ -73,10 +74,24 @@ public class Skater : MonoBehaviour {
 		health = 100;
 		renderer = GetComponentInChildren<SpriteRenderer> ();
 		pos = transform.position;
+		SetupInputHandler ();
 	}
 
 	void SetState(int newState) {
 		state = newState;
+	}
+
+	void SetupInputHandler() {
+		GameObject handlerParent = GameObject.Find ("InputHandler");
+		if (!handlerParent) {
+			handlerParent = new GameObject();
+			handlerParent.name = "InputHandler";
+			handlerParent.AddComponent("InputHandler");	
+			handlerParent.transform.parent = transform.parent;
+			
+		} 
+		handler = handlerParent.GetComponent<InputHandler>();
+		handler.RegisterListener (this);
 	}
 
 	bool GetHitDistance(out float distance) {
@@ -154,7 +169,7 @@ public class Skater : MonoBehaviour {
 		case STATE_FALLING:
 			if(jumpButtonDown) {
 				Crouch (false);
-			} else if(down && slamAllowed) {
+			} else if(slamButton && slamAllowed) {
 				InitiateSlam();
 			}
 			break;
@@ -362,10 +377,10 @@ public class Skater : MonoBehaviour {
 		}
 	}
 
-	public void SetInput(bool down, bool space, bool spaceUp) {
-		this.down = down;
-		this.jumpButtonDown = space;
-		this.jumpButtonUp = spaceUp;
+	public void OnInput(bool[] inputs) {
+		this.slamButton = inputs[0];
+		this.jumpButtonDown = inputs[1];
+		this.jumpButtonUp = inputs [8];
 	}
 	
 	public void SetYPos(float pos) {
@@ -394,6 +409,7 @@ public class Skater : MonoBehaviour {
 			hud.UpdateLives(lives);
 		}
 		gameLoop.Die (deathState);
+		handler.UnregisterListener (this);
 		Destroy (gameObject);
 	}
 
