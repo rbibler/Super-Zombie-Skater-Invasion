@@ -138,7 +138,7 @@ public class Serial : MonoBehaviour
 	/// </summary>
 	/// <value>The lines count.</value>
 	public int linesCount { get { return linesIn.Count; } }
-	public static string portName = "COM3";
+	public static string portName = "COM4";
 	#region Private vars
 
 	// buffer data as they arrive, until a new line is received
@@ -306,7 +306,6 @@ public class Serial : MonoBehaviour
 				while (true) {  // BytesToRead crashes on Windows -> use ReadLine or ReadByte in a Thread or Coroutine
 					char c = (char)s_serial.ReadByte();
 					serialIn += c;
-
 					//serialIn += s_serial.ReadLine();
 				}
 
@@ -412,6 +411,7 @@ public class Serial : MonoBehaviour
 			try {
 				s_serial.Open ();
 			} catch(System.Exception e) {
+				print ("Failed to open");
 				return false;
 			}
 			//print ("default ReadTimeout: " + s_serial.ReadTimeout);
@@ -420,7 +420,7 @@ public class Serial : MonoBehaviour
 			// clear input buffer from previous garbage
 			s_serial.DiscardInBuffer ();
 		}
-
+		print ("Successfully opened " + s_serial.PortName);
 		return s_serial.IsOpen;
 	}
 

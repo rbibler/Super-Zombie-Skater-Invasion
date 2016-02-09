@@ -12,11 +12,14 @@ public class HUDManager : MonoBehaviour {
 
 	public Sprite[] hudDigits;
 	public Sprite[] hudMeterBars;
+	public HudDigit worldNumber;
+	public HudDigit stageNumber;
 
 	private Vector3 pos;
 
 	void Start() {
 		pos = transform.position;
+		SetupLevelName ();
 	}
 
 	void Update() {
@@ -71,6 +74,7 @@ public class HUDManager : MonoBehaviour {
 	}
 	
 	public void UpdateScore(float score) {
+		return;
 		int hundredThousands = (int) (score / 100000);
 		int tenThousands = (int) ((score % 100000) / 10000);
 		int thousands = (int) ((score % 10000) / 1000);
@@ -100,4 +104,17 @@ public class HUDManager : MonoBehaviour {
 		playerLives[0].GetComponent<SpriteRenderer>().sprite = hudDigits[tens];
 		playerLives[1].GetComponent<SpriteRenderer>().sprite = hudDigits[ones];
 	}
+
+	void SetupLevelName() {
+		string levelName = Application.loadedLevelName;
+		string worldStage = levelName.Substring (levelName.Length - 4);
+		print (worldStage);
+		int world = 0;
+		int stage = 0;
+		System.Int32.TryParse (worldStage.Substring (0, 2), out world);
+		System.Int32.TryParse (worldStage.Substring (2), out stage);
+		worldNumber.GetComponent<SpriteRenderer> ().sprite = hudDigits [world];
+		stageNumber.GetComponent<SpriteRenderer> ().sprite = hudDigits [stage];
+	}
+
 }

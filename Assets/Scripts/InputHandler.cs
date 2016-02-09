@@ -25,6 +25,7 @@ public class InputHandler : MonoBehaviour {
 	bool aWasDown;
 
 	private Serial serial;
+	private OnScreenController controller;
 	private ArrayList inputListeners = new ArrayList();
 	private string inputLine;
 
@@ -33,20 +34,26 @@ public class InputHandler : MonoBehaviour {
 		GameObject.DontDestroyOnLoad (gameObject);
 		serial = GetComponent<Serial> ();
 		serial.NotifyLines = true;
+		FindController ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (serial.SerialExistsAndOpen) {
 			CheckSerialInput ();
-		} else {
-			a = Input.GetKeyDown (KeyCode.DownArrow) || (Input.GetMouseButtonDown (0) && Input.mousePosition.x < Screen.width / 2);
-			b = Input.GetKey (KeyCode.Space) || (Input.GetMouseButton(0) && Input.mousePosition.x > Screen.width / 2);
-			bUp = Input.GetKeyUp (KeyCode.Space) || (Input.GetMouseButtonUp (0) && Input.mousePosition.x > Screen.width / 2);
 		}
+		if(controller != null) {
+			int input = controller.GetButtonState ();
+			HandleControllerInput (input);
+
+		}
+		a = Input.GetKeyDown (KeyCode.DownArrow) || (Input.GetMouseButtonDown (0) && Input.mousePosition.x < Screen.width / 2);
+		b = Input.GetKey (KeyCode.Space) || (Input.GetMouseButton(0) && Input.mousePosition.x > Screen.width / 2);
+		bUp = Input.GetKeyUp (KeyCode.Space) || (Input.GetMouseButtonUp (0) && Input.mousePosition.x > Screen.width / 2);
+		start = Input.GetKeyDown (KeyCode.Return) || (Input.touchCount > 0 && Input.touches[0].tapCount > 1);
+		left = Input.GetKey (KeyCode.LeftArrow);
+		right = Input.GetKey (KeyCode.RightArrow);
 		NotifyListeners ();
-		
-		//skater.SetInput (down, space, spaceUp);
 	}
 
 	void CheckSerialInput() {
@@ -55,6 +62,7 @@ public class InputHandler : MonoBehaviour {
 		}
 		int input = -1;
 		if (System.Int32.TryParse (inputLine, out input)) {
+			print (input);
 			HandleControllerInput(input);
 		}
 		inputLine = "";
@@ -76,11 +84,29 @@ public class InputHandler : MonoBehaviour {
 		b = bNew;
 		a = !aWasDown && aNew;
 		aWasDown = aNew;
+		if (b) {
+			print ("B!");
+		}
 	}
-
+	
 	void OnSerialLine(string line) {
 		inputLine = line;
+		print (line);
 		return;
+	}
+
+	void OnLevelWasLoaded() {
+		print ("Level loaded!");
+		FindController ();
+
+	}
+
+	void FindController() {
+		GameObject cont = GameObject.Find ("Controller");
+		if (cont) {
+			controller = cont.GetComponent<OnScreenController>();
+			print ("Here controller: " + controller);
+		}
 	}
 
 	void NotifyListeners() {
