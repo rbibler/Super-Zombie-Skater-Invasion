@@ -4,10 +4,11 @@ using System.Collections;
 [RequireComponent (typeof (Animator))]
 [RequireComponent (typeof (Skater))]
 public class Skater : MonoBehaviour, IInputListener {
-	
-	public float jumpAccel;
-	public float jumpAccelIncrease;
-	public float speed;
+
+	public float initialJumpImpulse;
+	public float maintainJump;
+	public float maxJumpTime;
+	public float skateSpeed;
 	public float scoreMultiplier;
 	public float maxVerticalVelocity;
 	public float slamRegenTime;
@@ -15,8 +16,11 @@ public class Skater : MonoBehaviour, IInputListener {
 	public float infectionSpreadRate;
 	public float flashDuration;
 	public float fallDistanceThreshold;
+	public float startXWide;
+	public float startXNarrow;
 	public GameValues gameValues;
 	public GameLoopManager gameLoop;
+	public GameObject spriteBody;
 	public HUDManager hud;
 	public AudioClip jumpClip;
 	public AudioClip hitClip;
@@ -26,19 +30,25 @@ public class Skater : MonoBehaviour, IInputListener {
 	public Song levelSong;
 
 	private int state;
-	private float potentialJumpAccel = 6;
+	private int direction;
 	private float slamMeter;
 	private float health;
+	private float speed;
 	private bool slamButton;
 	private bool slamAllowed;
 	private bool jumpButtonDown;
 	private bool jumpButtonUp;
+	private bool leftButton;
+	private bool rightButton;
 	private bool infected;
 	private bool isInvincible;
 	private bool fallingDetectedLast;
 	private bool getUpOnLand;
 	private bool dieOnGetUp;
 	private bool onGround;
+	private bool mirror;
+	private bool noJump;
+	private bool jumpOnNext;
 	private Animator animator;
 	public static int lives = 1;
 	private static int coins;
@@ -47,11 +57,16 @@ public class Skater : MonoBehaviour, IInputListener {
 	private int colorCounter = 0;
 	private SpriteRenderer renderer;
 	private float lastFlash;
-	private float lastVel;
 	private float distanceToGround;
+	private float totalJumpTime;
 	private Vector3 pos;
+	private Vector3 vel;
 	private RaycastHit2D groundHit;
 	private InputHandler handler;
+	//private Quaternion facingLeft = Quaternion.Euler (0, 180, 0);
+	//private Quaternion facingRight = Quaternion.Euler (0, 0, 0);
+	private Vector3 facingLeft = new Vector3(-1, 1, 1);
+	private Vector3 facingRight = new Vector3(1, 1, 1);
 
 	public const int STATE_SKATING =   0x00;
 	public const int STATE_CROUCHING = 0x01;
@@ -60,21 +75,34 @@ public class Skater : MonoBehaviour, IInputListener {
 	public const int STATE_FLIPPING =  0x04;
 	public const int STATE_SLAMMING =  0x05;
 	public const int STATE_FALLING =   0x06;
+	public const int STATE_IDLE = 0x08;
+
+	const int RIGHT = 1;
+	const int LEFT = -1;
 
 	// Use this for initialization
 	void Start () {
-		SetState(STATE_SKATING);
+		pos = transform.position;
+		if (Camera.main.aspect <= 1.5) {
+			pos.x = startXNarrow;
+		} else {
+			pos.x = startXWide;
+		}
+		transform.position = pos;
+		SetState(STATE_IDLE);
 		animator = GetComponent<Animator> ();
 		hud.UpdateLives(lives);
 		hud.UpdateCoins (coins);
-		gameValues.speed = speed;
+		gameValues.speed = skateSpeed;
 		hud.UpdateHealth (1f);
 		hud.UpdateSlam (1f);
 		slamMeter = 1f;
 		health = 100;
 		renderer = GetComponentInChildren<SpriteRenderer> ();
-		pos = transform.position;
 		SetupInputHandler ();
+		direction = RIGHT;
+		vel = transform.rigidbody2D.velocity;
+
 	}
 
 	void SetState(int newState) {
@@ -110,11 +138,8 @@ public class Skater : MonoBehaviour, IInputListener {
 	
 	// Update is called once per frame
 	void Update () {
-		pos.y = transform.position.y;
-		transform.position = pos;
-		if (rigidbody2D.velocity.y >= maxVerticalVelocity) {
-			rigidbody2D.velocity = new Vector3(rigidbody2D.velocity.x, maxVerticalVelocity);
-		} 
+		vel = transform.rigidbody2D.velocity;
+		speed = 0;
 		HandleInput ();
 		SetAnimState ();
 		UpdateScore(scoreMultiplier * -gameValues.speed * Time.deltaTime);
@@ -122,8 +147,16 @@ public class Skater : MonoBehaviour, IInputListener {
 		if (isInvincible) {
 			Flash ();
 		}
-		lastVel = rigidbody2D.velocity.y;
+		UpdateJumpVel ();
 		CheckForFalling ();
+		gameValues.SetSpeed (speed);
+	}
+
+	void UpdateJumpVel() {
+		if (jumpOnNext) {
+			Jump ();
+		}
+		transform.rigidbody2D.velocity = vel;
 	}
 
 	void CheckForFalling() {
@@ -149,54 +182,87 @@ public class Skater : MonoBehaviour, IInputListener {
 
 	void SetAnimState() {
 		animator.SetInteger ("state", state);
-	}
+	}	      
 
 	void HandleInput() {
+		if (rightButton || leftButton) {
+			UpdateSpeedAndDirection(leftButton ? LEFT : RIGHT);
+		}
 		switch (state) {
 		case STATE_SKATING:
+		case STATE_IDLE:
 			if(jumpButtonDown) {
-				Crouch(true);
-			}
-			break;
-		case STATE_CROUCHING:
-			if(jumpButtonDown) {
-				Crouch(true);
-			} else if(jumpButtonUp) {
-				Jump ();
+				CrouchAndJump();
+			} else if(leftButton || rightButton) {
+				Skate ();
+			} else {
+				SetState (STATE_IDLE);
 			}
 			break;
 		case STATE_JUMPING: 
-		case STATE_FALLING:
 			if(jumpButtonDown) {
-				Crouch (false);
-			} else if(slamButton && slamAllowed) {
+				AddToJump();
+			} else if(!noJump) {
+				noJump = true;
+			}
+			break;
+		case STATE_FALLING:
+			if(slamButton && slamAllowed) {
 				InitiateSlam();
 			}
+			break;
+		case STATE_CROUCHING:
 			break;
 
 		}
 	}
-	
-	void Crouch(bool changeAnimState) {
-		potentialJumpAccel += jumpAccelIncrease * Time.deltaTime;
-		if(potentialJumpAccel >= jumpAccel) {
-			potentialJumpAccel = jumpAccel;
+
+	void UpdateSpeedAndDirection(int newDirection) {
+		if (newDirection == LEFT && direction == RIGHT) {
+			//transform.localRotation = facingLeft;
+			//transform.eulerAngles =  facingLeft;
+			spriteBody.transform.localScale = facingLeft;
+		} else if (newDirection == RIGHT && direction == LEFT) {
+			//transform.localRotation = facingRight;
+			//transform.eulerAngles = facingRight;
+			spriteBody.transform.localScale = facingRight;
 		}
-		if(changeAnimState) {
-			SetState(STATE_CROUCHING);
+		speed = skateSpeed * newDirection;
+		direction = newDirection;
+	}
+
+	void Skate() {
+		if(state != STATE_JUMPING) {
+			SetState (STATE_SKATING);
 		}
 	}
 	
-	void Jump() {
-		SetState(STATE_JUMPING);
-		transform.rigidbody2D.velocity = Vector3.up * potentialJumpAccel;
-		if (potentialJumpAccel < .5f * jumpAccel) {
-			slamAllowed = false;
-		} else if (slamMeter == 1.0f) {
-			slamAllowed = true;
+	void CrouchAndJump() {
+		SetState (STATE_CROUCHING);
+		animator.SetTrigger ("Crouch");
+		noJump = false;
+	}
+
+	public void SetJump() {
+		jumpOnNext = true;
+	}
+
+	public void Jump() {
+		SetState (STATE_JUMPING);
+		vel.y = initialJumpImpulse;
+		jumpOnNext = false;
+	}
+
+	void AddToJump() {
+		if (noJump || jumpOnNext) {
+			return;
 		}
-		potentialJumpAccel = 6;
-		AudioSource.PlayClipAtPoint (jumpClip, transform.position);
+		if (totalJumpTime > maxJumpTime) {
+			noJump = true;
+		} else {
+			vel.y += maintainJump;
+		}
+		totalJumpTime += Time.deltaTime;
 	}
 
 	void InitiateSlam() {
@@ -329,6 +395,8 @@ public class Skater : MonoBehaviour, IInputListener {
 	}
 	
 	void Land() {
+		totalJumpTime = 0;
+		noJump = false;
 		if(state == STATE_BAILING) {
 			if(dieOnGetUp) {
 				Invoke ("Die", 2.0f);
@@ -344,7 +412,7 @@ public class Skater : MonoBehaviour, IInputListener {
 			AudioSource.PlayClipAtPoint(landClip, transform.position);
 			InvokeRepeating ("FillSlam", slamRegenTime, slamRegenTime);
 		}
-		SetState(STATE_SKATING);
+		SetState(STATE_IDLE);
 		gameValues.SetSpeed (speed);
 	}
 
@@ -378,9 +446,11 @@ public class Skater : MonoBehaviour, IInputListener {
 	}
 
 	public void OnInput(bool[] inputs) {
+		jumpButtonUp = jumpButtonDown && !inputs [1];
 		this.slamButton = inputs[0];
 		this.jumpButtonDown = inputs[1];
-		this.jumpButtonUp = inputs [8];
+		this.leftButton = inputs [6];
+		this.rightButton = inputs [7];
 	}
 	
 	public void SetYPos(float pos) {

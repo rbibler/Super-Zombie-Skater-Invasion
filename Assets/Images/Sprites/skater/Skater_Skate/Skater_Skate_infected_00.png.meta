@@ -52,8 +52,8 @@ TextureImporter:
         y: 0
         width: 24
         height: 48
-      alignment: 6
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Skater_Skate_infected_00_1
       rect:
@@ -62,8 +62,8 @@ TextureImporter:
         y: 0
         width: 24
         height: 48
-      alignment: 6
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

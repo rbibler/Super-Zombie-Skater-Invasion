@@ -23,8 +23,8 @@ public class HUDManager : MonoBehaviour {
 	}
 
 	void Update() {
-		pos.x = Camera.main.transform.position.x - 26.625f;
-		pos.y = Camera.main.transform.position.y - 15f;
+		pos.x = Camera.main.transform.position.x - 10.50429f;
+		pos.y = Camera.main.transform.position.y - 10.50429f;
 		transform.position = pos;
 	}
 

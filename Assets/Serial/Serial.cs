@@ -189,8 +189,11 @@ public class Serial : MonoBehaviour
 			Debug.LogWarning("Serial debug informations enabled by " + this);
 			s_debug = true;
 		}
-
-		SerialExistsAndOpen = checkOpen (9600);
+		int tryCount = 0;
+		while (tryCount < 3 && !SerialExistsAndOpen) {
+			SerialExistsAndOpen = checkOpen (9600);
+			tryCount++;
+		}
 
 	}
 

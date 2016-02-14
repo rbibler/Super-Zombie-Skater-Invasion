@@ -13,6 +13,7 @@ public class InputHandler : MonoBehaviour {
 	private const int NES_LEFT = 64;
 	private const int NES_RIGHT = 128;
 
+
 	bool a;
 	bool b;
 	bool select;
@@ -21,13 +22,13 @@ public class InputHandler : MonoBehaviour {
 	bool down;
 	bool left;
 	bool right;
-	bool bUp;
 	bool aWasDown;
 
 	private Serial serial;
 	private OnScreenController controller;
 	private ArrayList inputListeners = new ArrayList();
 	private string inputLine;
+	private bool touchScreen;
 
 	// Use this for initialization
 	void Start () {
@@ -35,6 +36,7 @@ public class InputHandler : MonoBehaviour {
 		serial = GetComponent<Serial> ();
 		serial.NotifyLines = true;
 		FindController ();
+		touchScreen = Input.touchSupported;
 	}
 	
 	// Update is called once per frame
@@ -42,17 +44,17 @@ public class InputHandler : MonoBehaviour {
 		if (serial.SerialExistsAndOpen) {
 			CheckSerialInput ();
 		}
-		if(controller != null) {
+		if (controller != null && touchScreen) {
 			int input = controller.GetButtonState ();
 			HandleControllerInput (input);
 
+		} else {
+			a = Input.GetKeyDown (KeyCode.DownArrow);
+			b = Input.GetKey (KeyCode.Space) || Input.GetKeyDown (KeyCode.Space);
+			start = Input.GetKeyDown (KeyCode.Return) || (Input.touchCount > 0 && Input.touches [0].tapCount > 1);
+			left = Input.GetKey (KeyCode.LeftArrow);
+			right = Input.GetKey (KeyCode.RightArrow);
 		}
-		a = Input.GetKeyDown (KeyCode.DownArrow) || (Input.GetMouseButtonDown (0) && Input.mousePosition.x < Screen.width / 2);
-		b = Input.GetKey (KeyCode.Space) || (Input.GetMouseButton(0) && Input.mousePosition.x > Screen.width / 2);
-		bUp = Input.GetKeyUp (KeyCode.Space) || (Input.GetMouseButtonUp (0) && Input.mousePosition.x > Screen.width / 2);
-		start = Input.GetKeyDown (KeyCode.Return) || (Input.touchCount > 0 && Input.touches[0].tapCount > 1);
-		left = Input.GetKey (KeyCode.LeftArrow);
-		right = Input.GetKey (KeyCode.RightArrow);
 		NotifyListeners ();
 	}
 
@@ -62,16 +64,12 @@ public class InputHandler : MonoBehaviour {
 		}
 		int input = -1;
 		if (System.Int32.TryParse (inputLine, out input)) {
-			print (input);
 			HandleControllerInput(input);
 		}
 		inputLine = "";
 	}
 
 	void HandleControllerInput(int input) {
-		if (input != 0) {
-			print (System.Convert.ToString (input, 2));
-		}
 		bool aNew = (input & NES_A) != 0;
 		bool bNew = (input & NES_B) != 0;
 		select = (input & NES_SELECT) != 0;
@@ -80,23 +78,18 @@ public class InputHandler : MonoBehaviour {
 		down = (input & NES_DOWN) != 0;
 		left = (input & NES_LEFT) != 0;
 		right = (input & NES_RIGHT) != 0;
-		bUp = b & !bNew;
 		b = bNew;
 		a = !aWasDown && aNew;
 		aWasDown = aNew;
-		if (b) {
-			print ("B!");
-		}
 	}
 	
 	void OnSerialLine(string line) {
-		inputLine = line;
 		print (line);
+		inputLine = line;
 		return;
 	}
 
 	void OnLevelWasLoaded() {
-		print ("Level loaded!");
 		FindController ();
 
 	}
@@ -105,12 +98,11 @@ public class InputHandler : MonoBehaviour {
 		GameObject cont = GameObject.Find ("Controller");
 		if (cont) {
 			controller = cont.GetComponent<OnScreenController>();
-			print ("Here controller: " + controller);
 		}
 	}
 
 	void NotifyListeners() {
-		bool[] inputs = new bool[] {a, b, select, start, up, down, left, right, bUp};
+		bool[] inputs = new bool[] {a, b, select, start, up, down, left, right};
 		IInputListener listener;
 		for (int i = 0; i < inputListeners.Count; i++) {
 			listener = (IInputListener) inputListeners[i];

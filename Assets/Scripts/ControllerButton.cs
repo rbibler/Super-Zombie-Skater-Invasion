@@ -6,15 +6,14 @@ public class ControllerButton : MonoBehaviour {
 
 	bool buttonDown;
 	public string name;
-	Bounds bounds;
 
 	private int pointerIndex = -1;
 	private BoxCollider2D collider;
 
 	void Start() {
 		collider = GetComponent<BoxCollider2D> ();
-		bounds = collider.bounds;
 	}
+	
 
 	void Update() {
 		Touch[] touches = Input.touches;
@@ -28,7 +27,6 @@ public class ControllerButton : MonoBehaviour {
 		int pointer = touch.fingerId;
 		Vector2 pos = touch.position;
 		bool contains = ContainsTouch (pos);
-
 		if (pointerIndex == pointer && (touchPhase == TouchPhase.Ended)) {
 			buttonDown = false;
 			pointerIndex = -1;
@@ -44,12 +42,18 @@ public class ControllerButton : MonoBehaviour {
 
 	bool ContainsTouch(Vector2 pos) {
 		Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, Camera.main.transform.position.z - transform.position.z ));
-		worldPos.z = bounds.center.z;
-		return bounds.Contains (worldPos);
+		worldPos.z = collider.bounds.center.z;
+		return collider.bounds.Contains (worldPos);
 	}
 
 	public bool GetButtonDown() {
 		return buttonDown;
+	}
+
+	void OnDrawGizmos() {
+		Gizmos.color = Color.cyan;
+
+			Gizmos.DrawWireCube(collider2D.bounds.center, collider2D.bounds.size);
 	}
 
 }

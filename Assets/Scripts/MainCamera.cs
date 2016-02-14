@@ -21,11 +21,11 @@ public class MainCamera : MonoBehaviour {
 			return;
 		}
 		float centerY = skater.transform.position.y;
-		if (centerY >= 15) {
+		if (centerY >= 10.50429f) {
 			pos.y = centerY;
 
-		} else if(centerY <= 15) {
-			pos.y = 15;
+		} else if(centerY <= 10.50429f) {
+			pos.y = 10.50429f;
 		}
 		this.transform.position = pos;
 	}
